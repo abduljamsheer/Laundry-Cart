@@ -1,0 +1,22 @@
+/* Sidebar */
+ .create-sidebar {
+     width: 60px;
+     background-color: #5861AE;
+     padding: 1rem 0;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     gap: 1.5rem;
+
+ }
+
+ .sidebar-icon {
+     color: white;
+     font-size: 1.5rem;
+     cursor: pointer;
+ }
+ .sidebar-icon.active {
+     background-color: #ffff;
+     padding: 0.5rem 1.2rem;
+    
+ }

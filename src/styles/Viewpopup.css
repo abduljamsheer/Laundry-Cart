@@ -1,0 +1,101 @@
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-container {
+  background-color: #fff;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+  padding: 24px;
+  position: relative;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.popup-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.popup-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.popup-close:hover {
+  color: #000;
+}
+
+.popup-content {
+  line-height: 1.6;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-content ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.popup-content li {
+  margin-bottom: 8px;
+}
+
+.popup-content hr {
+  margin: 16px 0;
+  border: none;
+  border-top: 1px solid #eee;
+}
+
+.popup-content strong {
+  color: #333;
+}
+.popup-content-head{
+    display: flex;
+    gap:30px;
+}
+.popup-content-body{
+    text-align: left;
+    width: 100%;
+}
+.popup-cancel-btn{
+    text-align: right;
+    padding: 5px;
+    margin: 8px;
+}
+.popup-cancel-btn button{
+    background: #F41313 0% 0% no-repeat padding-box;
+border-radius: 4px;
+width: 150px;
+height: 42px;
+text-align: center;
+font: normal normal bold 16px/22px "Open Sans";
+letter-spacing: 0.16px;
+color: #FFFFFF;
+}
