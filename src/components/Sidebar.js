@@ -7,7 +7,6 @@ const Sidebar = ({ activeView, setActiveView }) => {
   return (
     <div className="create-sidebar">
       <div
-      // className={`sidebar-icon ${activeView === 'orders' ? 'active' : ''}`}
       onClick={() =>{ 
         navigate('/')
       }}

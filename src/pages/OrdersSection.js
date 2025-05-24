@@ -21,27 +21,13 @@ const OrdersSection = ({ setActiveView, orders, setOrder }) => {
       });
 
       if (!res.ok) throw new Error('Failed to delete order');
-
-      // setOrder(orders.filter(order => order.orderId !== selectedOrderId));
       setPopup(false);
     } catch (error) {
       console.error('Delete error:', error);
       alert('Could not delete order');
     }
   };
-  // useEffect(() => {
 
-  //   const fetchOrders = async () => {
-  //     const token = getToken('token');
-  //     const res = await fetch(`http://localhost:8000/api/v1/order/`, {
-  //       headers: {
-  //         'Authorization': `Bearer ${token}`
-  //       }
-  //     });
-  //     const data = await res.json();
-  //     setOrder(data.orders);
-  //   };
-  // }, [selectedOrderId])
   const filteredOrders = orders.filter(order =>
     order.orderId.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (order.location && order.location.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -76,7 +62,7 @@ const OrdersSection = ({ setActiveView, orders, setOrder }) => {
           >
             CREATE
           </button></div>
-      ) : (                                               //--------------------------------fetch-------------------------
+      ) : (                                              
         <table className="orders-table">
           <thead>
             <tr>
@@ -103,9 +89,7 @@ const OrdersSection = ({ setActiveView, orders, setOrder }) => {
                 <td>{order.totalItems}</td>
                 <td>{order.price}</td>
                 <td>
-                  <span
-                  
-                  >
+                  <span>
                     {order.status}
                   </span>
                 </td>

@@ -53,6 +53,9 @@ export const Footer = () => {
                 </div>
 
             </div>
+             <div className="create-footer">
+          2025 © Laundry
+        </div>
         </>
     );
 };
@@ -85,8 +88,10 @@ const SignInForm = () => {
     const [success, setSuccess] = React.useState('');
     const [isLoading, setIsLoading] = React.useState(false);
     const [response, setResponce] = useState({});
-
-
+    const [passwordVisible, setPasswordVisible] = useState(false);
+      const toggleVisibility = () => {
+    setPasswordVisible(prev => !prev);
+  };
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -130,17 +135,18 @@ const SignInForm = () => {
                 } else {
                     const token = data.token;
                     setToken("token", token);
-                    setToken('username',data.name)
+                   
                     if (token === getToken("token")) {
                         console.log(token);
                         console.log(data.name);
-                        setToken("Username", data.name);
+                        
                         navigate("/create");
+                        setSuccess('login success')
                     }
                 }
                 if (data.status == 'Sucess') {
                     setToken("token", data.token);
-                    setToken('username',data.name)
+         
                 }
             }).catch((error) => {
                 setError(error.message)
@@ -160,17 +166,17 @@ const SignInForm = () => {
                 onChange={handleInputChange}
             />
             <input
-                type="password"
+                type={passwordVisible ? 'text' : 'password'}
                 name="password"
                 ref={inputRef}
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleInputChange}
             />
-            <img className='lock-icon' src='images/padlock.svg' placeholder='padlockimg/svg' onClick={() => {
-                inputRef.current.type = "text"
-            }} />
-            <a href="#" className="forgot-password">Forget Password?</a>
+            <img className='lock-icon'  src='images/padlock.svg' placeholder='padlockimg/svg' onClick={toggleVisibility} />
+            <label className="forgot-password"><a href="#"  onClick={()=>{
+                navigate('/reset-password')
+            }}>Forget Password?</a></label>
             {error && <div className="error-message">{error}</div>}
             {success && <div className="success-message">{success}</div>}
             <div className='btn-head'>

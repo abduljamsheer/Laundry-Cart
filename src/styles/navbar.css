@@ -1,79 +1,79 @@
 .create-navbar {
-   position:relative;
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-   
-     background-color: white;
-     border-bottom: 1px solid #e0e0e0;
- }
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
- .navbar-left {
-     display: flex;
-     align-items: center;
-     gap: 2rem;
+  background-color: white;
+  border-bottom: 1px solid #e0e0e0;
+}
 
- }
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 
- .navbar-left .logo {
-     padding-left: 45px;
-     font: normal normal 900 1.25rem "Avenir";
-     font-weight: 600;
-     color: #5861AE;
-     letter-spacing: 0.05em;
- }
+}
 
- .navbar-left a {
-     text-decoration: none;
-     color: #666;
-     font-size: 1rem;
- }
+.navbar-left .logo {
+  padding-left: 45px;
+  font: normal normal 900 1.25rem "Avenir";
+  font-weight: 600;
+  color: #5861AE;
+  letter-spacing: 0.05em;
+}
 
- .navbar-left a:hover {
-     color: #5861AE;
- }
+.navbar-left a {
+  text-decoration: none;
+  color: #666;
+  font-size: 1rem;
+}
 
- .navbar-right {
-     display: flex;
-     align-items: center;
-     gap: 1rem;
- }
+.navbar-left a:hover {
+  color: #5861AE;
+}
 
- .navbar-right a {
-     width: 113px;
-     height: 60px;
-     color: #565657;
-     text-decoration: none;
-     font-size: 0.875rem;
-     padding-left: 1.5rem;
-     padding-top: 1.4rem;
-     border-left: 0.5px solid #E3E3E3;
- }
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 
- .navbar-right .user-profile {
-     background-color: #5861AE;
-     color: white;
-     padding: 1.49rem 1.5rem;
-    
-     display: flex;
-     align-items: center;
-     gap: 0.5rem;
- }
+.navbar-right a {
+  width: 113px;
+  height: 60px;
+  color: #565657;
+  text-decoration: none;
+  font-size: 0.875rem;
+  padding-left: 1.5rem;
+  padding-top: 1.4rem;
+  border-left: 0.5px solid #E3E3E3;
+}
 
- .navbar-right .user-profile img {
-     width: 24px;
-     height: 24px;
-     border-radius: 50%;
- }
+.navbar-right .user-profile {
+  background-color: #5861AE;
+  color: white;
+  padding: 1.49rem 1.5rem;
 
- 
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-right .user-profile img {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+
 .dropdown-panel {
   position: absolute;
   top: 100%;
   right: 0;
   background-color: white;
   border: 1px solid #ccc;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   min-width: 160px;
   z-index: 1000;
   padding: 10px;
@@ -86,9 +86,14 @@
   margin-bottom: 10px;
 }
 
+.user-info:hover {
+  background-color: #efeffe;
+  border-radius: 4px;
+}
+
 .user-name {
   font-weight: bold;
-  color:black;
+  color: black;
 }
 
 .edit-icon {
@@ -105,8 +110,27 @@
   cursor: pointer;
   border-radius: 4px;
   font-size: 14px;
+  text-align: center;
+  padding: 10px 20px;
+  margin-top: 10px;
 }
 
 .logout-button:hover {
   background-color: #c0392b;
+}
+
+.Logout-svg {
+  padding-right: 5px;
+}
+
+.profile {
+  color: blue;
+  font-weight: 700;
+  padding-left: 5px;
+  padding-bottom: 5px;
+}
+
+.profile svg {
+  padding-top: 11px;
+  padding-right: 5px;
 }

@@ -1,39 +1,54 @@
 
 import React, { useEffect, useState } from 'react'
 
-import { 
-   User } from 'lucide-react'
+import { User } from 'lucide-react'
 import '../styles/navbar.css'
 import { useNavigate } from 'react-router-dom';
 import { getToken, removeToken } from '../AuthOPration';
-import {Edit} from 'lucide-react'
+import {Edit,LogOut} from 'lucide-react'
+import ProfileComponent from './Profile';
 
 const NavBar = () => {
   const navigate=useNavigate()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [edit,setEdit]=useState(false)
-  const [name, setName] = useState(getToken('username') || '');
-  const handleToggleDropdown = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  
+  const handleToggleDropdown = (e) => {
+    e.stopPropagation()
     setIsDropdownOpen(prev => !prev);
   };
 useEffect(() => {
-    const name=getToken('username')
-    console.log(name);
+  const token=getToken('token')
+    fetch('http://localhost:8000/api/v1/user',{
+      method:"GET",
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      
+    }).then((res)=>res.json()).
+    then((data)=>{
+      setName(data.data.name);
+      setEmail(data.data.email)
+    })
     
   }, []);
-const HandleName=(e)=>{
-  e.stopPropagation()
-  setEdit(true)
-}
-const handleSave = (e) => {
-  e.stopPropagation();
-  setEdit(false);
-  localStorage.setItem('username', name); // or use your setName('username', name)
-};
-const handleCancel = (e) => {
-  e.stopPropagation();
-  setEdit(false); 
-};
+
+  const HandleProfile=(e)=>{
+    e.stopPropagation()
+    setEdit(prev => !prev)
+  }
+    useEffect(() => {
+    const handleClickOutside = () => {
+      setIsDropdownOpen(false);
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
   return (
     <div className="create-navbar">
       <div className="navbar-left">
@@ -51,20 +66,17 @@ const handleCancel = (e) => {
 
           {isDropdownOpen && (
             <div className="dropdown-panel">
-              <div className="user-info">
-                <span className="user-name">{name||"User Name"}</span>
-                <span className="edit-icon" 
-                onClick={HandleName}
-                ><Edit color="black" /></span>
+              <div className="user-info" onClick={HandleProfile}>         
+                <div className='profile' > <User size={30} color='black' />Profile</div>
               </div>
-              {edit&&<div><input type='text' value={name} onChange={(e) => setName(e.target.value)} onClick={(e)=>  e.stopPropagation()}/>
-              <button onClick={handleSave}>Save</button>
-              <button onClick={handleCancel}>Cancel</button></div>
+              {
+                edit&&<ProfileComponent/>
               }
               <button className="logout-button" onClick={() => {
                 removeToken('token')
                 navigate('/')
-              }}>Logout</button>
+              }}>
+                <LogOut className='Logout-svg' size={20}/>Logout</button>
             </div>
           )}
         </div>

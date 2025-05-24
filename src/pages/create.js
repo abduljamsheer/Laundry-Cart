@@ -165,7 +165,7 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
           {orderItems.map((item, index) => (
             <tr key={item.type}>
               <td>
-                <img src={item.imageurl} alt={item.type} />
+                <img src={item.imageurl}  alt={item.type} />
                 {item.type}
                 <p>Any color, print type and material</p>
               </td>
@@ -182,25 +182,25 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
                     className={item.washType.includes('wash') ? 'active' : ''}
                     onClick={() => handleWashType(index, 'wash')}
                   >
-                    <img src='images/washing-machine.svg' alt='washingmachine' />
+                    <img src='images/washing-machine.svg' className="wash-img" alt='washingmachine' />
                   </button>
                   <button
                     className={item.washType.includes('iron') ? 'active' : ''}
                     onClick={() => handleWashType(index, 'iron')}
                   >
-                    <img src='images/ironing.svg' alt='ironing' />
+                    <img src='images/ironing.svg' className="wash-img" alt='ironing' />
                   </button>
                   <button
                     className={item.washType.includes('dry') ? 'active' : ''}
                     onClick={() => handleWashType(index, 'dry')}
                   >
-                    <img src='images/towel.svg' alt='towel/svg' />
+                    <img src='images/towel.svg' className="wash-img" alt='towel/svg' />
                   </button>
                   <button
                     className={item.washType.includes('chemical') ? 'active' : ''}
                     onClick={() => handleWashType(index, 'chemical')}
                   >
-                    <img src='images/bleach.svg' alt='bleach/svg' />
+                    <img src='images/bleach.svg' className="wash-img" alt='bleach/svg' />
                   </button>
                 </div>
               </td>

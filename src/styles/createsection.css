@@ -47,6 +47,10 @@
      display: flex;
      gap: 0.5rem;
  }
+.wash-type .wash-img{
+    width: 28px;
+    height: 28px;
+ }
 
  .wash-type button {
      background: none;
@@ -99,7 +103,6 @@
     margin-left: 1rem;
  }
  
- /* Summary Modal */
  .modal-overlay {
      position: fixed;
      top: 0;

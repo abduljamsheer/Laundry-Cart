@@ -3,7 +3,7 @@ import Sidebar from './Sidebar';
 import NavBar from './Navbar';
 import OrdersSection from '../pages/OrdersSection';
 import CreateOrderSection from '../pages/create';
-import '../styles/newlayout.css';
+import '../styles/layout.css';
 import SuccessModal from '../pages/Success';
 import { getToken } from '../AuthOPration';
 import { useNavigate, useLocation } from 'react-router-dom';

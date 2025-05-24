@@ -1,51 +1,3 @@
-// import React from 'react'
-// import '../styles/signup.css'
-// import { Footer, LoginHeader } from './login'
-// import {  useNavigate } from 'react-router-dom';
-
-// function Main(){
-//      const navigate=useNavigate()
-//     return<div className='signup-main'>
-//         <aside className='signup-sidebar'>
-//             <h2 className='aside-head'>Laundry Service</h2>
-//             <p>Doorstep Wash & Dryclean Service</p>
-//             <p>Already Have Account</p>
-//             <button onClick={()=>{
-//                   navigate('/sigin')
-//             }}>
-//                Sign in
-//             </button>
-//         </aside>
-//         <main>
-// <h2 className='main-head'>REGISTER</h2>
-// <form>
-//   <input type='text' placeholder='Name'/>
-//   <input type='text' placeholder='Email'/>
-//   <input type='text' placeholder='Phone'/>
-//   <input type='text' placeholder='State'/>
-//   <input type='text' placeholder='District'/>
-//   <input type='text' placeholder='Address'/>
-//   <input type='text' placeholder='Pincode'/>
-//   <input type='password' placeholder='Password'/>
-//   <input type='password' placeholder='Confirm Password'/>
-// </form>
-//         </main>
-//     </div>
-// }
-
-
-// function Signup() {
-//   return (
-//     <div>
-//         <LoginHeader/>
-//           <Main/>
-//         <Footer/>
-//     </div>
-//   )
-// }
-
-// export default Signup
-
 import React, { useState } from 'react';
 import '../styles/signup.css'
 import { Footer, LoginHeader } from './login';
@@ -64,8 +16,7 @@ function Signup() {
     terms: false
   });
   const [data,setData]=useState({})
-  const navigate = useNavigate()
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const districtsByState = {
     'delhi': ['Central Delhi', 'East Delhi', 'New Delhi', 'North Delhi', 'South Delhi', 'West Delhi'],
@@ -97,10 +48,6 @@ function Signup() {
     }
     console.log(formData);
     
-    // Simulate API call
-  // console.log(formData);
-  
-    
     fetch('http://localhost:8000/api/v1/user/register',{
       method:'POST',
       headers:{
@@ -113,31 +60,13 @@ function Signup() {
         ...prev,
         message:data.message,
       }));
-      
-      // console.log(data);
-      
       if(data.status=="Success"){
         setTimeout(()=>{
           navigate('/')
 
-        },2000)
+        },3000)
       }
     }).catch(err=>setData(err.message))
-
-
-    // alert('Registration successful! Please check your email to verify your account.');
-    // setFormData({
-    //   name: '',
-    //   email: '',
-    //   phone: '',
-    //   state: '',
-    //   district: '',
-    //   address: '',
-    //   pincode: '',
-    //   password: '',
-    //   confirmPassword: '',
-    //   terms: false
-    // });
   };
   
 
@@ -153,7 +82,7 @@ function Signup() {
               <p>Doorstep Wash & Dryclean Service</p>
               <div className="already-account">
                 <p>Already Have Account</p>
-                <a href="/login" className="mobile-signin-btn">Sign In</a>
+                <a href="/" className="mobile-signin-btn">Sign In</a>
               </div>
             </div>
             <div className="registration-form">
