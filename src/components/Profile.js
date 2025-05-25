@@ -3,6 +3,7 @@ import '../styles/profile.css';
 import { getToken } from '../AuthOPration';
 
 const ProfileComponent = () => {
+  const URL = process.env.REACT_APP_API_URL ||'http://localhost:8000';
   const [user, setUser] = useState({
     email: '',
     oldPassword: '',
@@ -16,7 +17,7 @@ const ProfileComponent = () => {
     const fetchUserData = async () => {
       try {
         const token = getToken('token');
-        const response = await fetch('http://localhost:8000/api/v1/user', {
+        const response = await fetch(`${URL}/api/v1/user`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -25,7 +26,7 @@ const ProfileComponent = () => {
         });
         if (!response.ok) throw new Error('Failed to fetch user data');
         const data = await response.json();
-        setUser((prev) => ({ ...prev, email: data.data.email ,}));
+        setUser((prev) => ({ ...prev, email: data.data.email, }));
       } catch (err) {
         setError('Error fetching user data');
       }
@@ -39,14 +40,14 @@ const ProfileComponent = () => {
   };
 
   const handleSubmit = async (e) => {
-     e.stopPropagation();
+    e.stopPropagation();
     e.preventDefault();
     setError('');
     setSuccess('');
 
     try {
       const token = getToken('token');
-      const response = await fetch('http://localhost:8000/api/v1/user/update-profile', {
+      const response = await fetch(`${URL}/api/v1/user/update-profile`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +62,7 @@ const ProfileComponent = () => {
 
       const data = await response.json();
       console.log(data.message);
-      
+
 
       if (!response.ok) throw new Error(data.message || 'Update failed');
 
@@ -74,20 +75,20 @@ const ProfileComponent = () => {
   };
 
   const toggleEdit = (e) => {
-      e.stopPropagation();
+    e.stopPropagation();
     setIsEditing(!isEditing);
     setError('');
     setSuccess('');
   };
 
   return (
-    <div className="profile-container" onClick={(e)=>e.stopPropagation()}>
+    <div className="profile-container" onClick={(e) => e.stopPropagation()}>
       <h2 className="profile-title">User Profile</h2>
       {error && <p className="error-message">{error}</p>}
       {success && <p className="success-message">{success}</p>}
 
       {isEditing ? (
-        <form onSubmit={handleSubmit} className="profile-form" onClick={(e)=>e.stopPropagation()}>
+        <form onSubmit={handleSubmit} className="profile-form" onClick={(e) => e.stopPropagation()}>
           <div>
             <label className="form-label">Email</label>
             <input

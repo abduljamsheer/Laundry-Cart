@@ -3,6 +3,7 @@ import '../styles/signup.css'
 import { Footer, LoginHeader } from './login';
 import { useNavigate } from 'react-router-dom';
 function Signup() {
+   const URL=process.env.REACT_APP_API_URL;
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -46,9 +47,8 @@ function Signup() {
       alert('Please agree to the terms and conditions');
       return;
     }
-    console.log(formData);
-    
-    fetch('http://localhost:8000/api/v1/user/register',{
+
+    fetch(`${URL}/api/v1/user/register`,{
       method:'POST',
       headers:{
         'Content-Type':'application/json',

@@ -10,6 +10,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 
 const Layout = () => {
+   const URL = process.env.REACT_APP_API_URL ||'http://localhost:8000';
   const [activeView, setActiveView] = React.useState('orders');
   const [orders, setOrders] = React.useState([]);
   const [showSuccess, setShowSuccess] = React.useState(false);
@@ -41,7 +42,7 @@ const Layout = () => {
       const token = getToken('token');
        if (!token) return;
       try {
-        const res = await fetch('http://localhost:8000/api/v1/order', {
+        const res = await fetch(`${URL}/api/v1/order`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json',

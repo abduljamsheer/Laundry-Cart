@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 
 import '../styles/createsection.css'
 import { getToken } from '../AuthOPration';
-import { useNavigate } from 'react-router-dom'; 
-// import Summary from '../components/Summary';
+import { useNavigate } from 'react-router-dom';
 const CreateOrderSection = ({ setActiveView, addOrder }) => {
-  //  const [isDisabled, setIsDisabled] = useState(true);
+   const URL = process.env.REACT_APP_API_URL ||'http://localhost:8000';
   const washTypePrices = {
     wash: 20,
     iron: 10,
@@ -21,7 +20,7 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
     { type: 'Joggers', quantity: 0, washType: [], pricePerItem: 100, total: 0, imageurl: 'images/joggers.avif' },
     { type: 'Others', quantity: 0, washType: [], pricePerItem: 50, total: 0, imageurl: 'images/others.jpg' },
   ]);
-  const statusofWashing=["In Washing","Ready to pickup","In Ironing","Ready to deliver"];
+  const statusofWashing = ["In Washing", "Ready to pickup", "In Ironing", "Ready to deliver"];
   const calculateTotal = (item) => {
     const basePrice = item.pricePerItem * item.quantity;
     const washTypeCost = item.washType.reduce((sum, type) => sum + (washTypePrices[type] || 0), 0) * item.quantity;
@@ -73,12 +72,12 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
   const minutes = String(today.getMinutes()).padStart(2, '0');
   const time = `${hours}:${minutes}`;
   const output = `${date},${time}`;
-  const navigate=useNavigate()
- 
+  const navigate = useNavigate()
+
   const selectedItems = orderItems
-  .filter(item => item.quantity > 0)
-  .map(item => item.type);
-  const handleConfirm = async() => {
+    .filter(item => item.quantity > 0)
+    .map(item => item.type);
+  const handleConfirm = async () => {
     const newOrder = {
       orderId: `OR00${Math.floor(Math.random() * 1000)}`,
       date: output,
@@ -88,7 +87,7 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
       totalItems: orderItems.reduce((sum, item) => sum + item.quantity, 0),
       price: `Rs ${orderItems.reduce((sum, item) => sum + item.total, 0) + 90}`,
       status: statusofWashing[Math.floor(Math.random() * 4)],
-       items: selectedItems
+      items: selectedItems
     };
     const token = getToken('token');
     if (!token) {
@@ -97,7 +96,7 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/api/v1/order', {
+      const response = await fetch(`${URL}/api/v1/order`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -118,7 +117,7 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
 
     } catch (error) {
       alert(`Error creating order: ${error.message}`);
-      if(error.message=='Invalid token'){
+      if (error.message == 'Invalid token') {
         navigate('/')
       }
     }
@@ -165,7 +164,7 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
           {orderItems.map((item, index) => (
             <tr key={item.type}>
               <td>
-                <img src={item.imageurl}  alt={item.type} />
+                <img src={item.imageurl} alt={item.type} />
                 {item.type}
                 <p>Any color, print type and material</p>
               </td>

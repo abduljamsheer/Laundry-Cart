@@ -5,6 +5,7 @@ import { Eye } from 'lucide-react'
 import { getToken } from '../AuthOPration'
 import ViewPopup from '../components/ViewPopup';
 const OrdersSection = ({ setActiveView, orders, setOrder }) => {
+   const URL = process.env.REACT_APP_API_URL ||'http://localhost:8000';
   const [popup, setPopup] = useState(false)
   const [view, setView] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState(null);
@@ -12,7 +13,7 @@ const OrdersSection = ({ setActiveView, orders, setOrder }) => {
   const handleConfirmCancel = async () => {
     try {
       const token = getToken('token');
-      const res = await fetch(`http://localhost:8000/api/v1/order/${selectedOrderId}`, {
+      const res = await fetch(`${URL}/api/v1/order/${selectedOrderId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

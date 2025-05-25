@@ -3,16 +3,17 @@ import '../styles/login.css'
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../AuthOPration';
 export function LoginHeader() {
+    
     const [menuOpen, setMenuOpen] = useState(false);
-     useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (!e.target.closest('.popup-menu') && !e.target.closest('.kebab-menu')) {
-        setMenuOpen(false);
-      }
-    };
-    document.addEventListener('click', handleOutsideClick);
-    return () => document.removeEventListener('click', handleOutsideClick);
-  }, []);
+    useEffect(() => {
+        const handleOutsideClick = (e) => {
+            if (!e.target.closest('.popup-menu') && !e.target.closest('.kebab-menu')) {
+                setMenuOpen(false);
+            }
+        };
+        document.addEventListener('click', handleOutsideClick);
+        return () => document.removeEventListener('click', handleOutsideClick);
+    }, []);
     return <nav className="navbar">
         <div className="navbar-logo">LAUNDRY</div>
         <div className="navbar-links">
@@ -22,16 +23,16 @@ export function LoginHeader() {
             <a href="#" className="nav-link sign-in-btn">Sign In</a>
         </div>
         <div className="kebab-menu" onClick={() => setMenuOpen(!menuOpen)}>
-        ⋮
-      </div>
-      {menuOpen && (
-        <div className="popup-menu">
-          <a href="#" className="popup-link">Home</a>
-          <a href="#" className="popup-link">Services</a>
-          <a href="#" className="popup-link">Contact</a>
-          <button className="sign-in-btn popup-btn">Sign In</button>
+            ⋮
         </div>
-      )}
+        {menuOpen && (
+            <div className="popup-menu">
+                <a href="#" className="popup-link">Home</a>
+                <a href="#" className="popup-link">Services</a>
+                <a href="#" className="popup-link">Contact</a>
+                <button className="sign-in-btn popup-btn">Sign In</button>
+            </div>
+        )}
     </nav>
 }
 export const Footer = () => {
@@ -99,6 +100,7 @@ const MainSection = () => {
     );
 };
 const SignInForm = () => {
+    const URL=process.env.REACT_APP_API_URL;
     const navigate = useNavigate()
     const [formData, setFormData] = React.useState({
         contact: '',
@@ -141,7 +143,7 @@ const SignInForm = () => {
         setError('');
         setSuccess('');
         setIsLoading(false);
-        fetch('http://localhost:8000/api/v1/user/login', {
+        fetch(`${URL}/api/v1/user/login`, {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
