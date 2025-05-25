@@ -1,8 +1,18 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import '../styles/login.css'
 import { useNavigate } from 'react-router-dom';
-import { getToken, setToken, removeToken } from '../AuthOPration';
+import { getToken, setToken } from '../AuthOPration';
 export function LoginHeader() {
+    const [menuOpen, setMenuOpen] = useState(false);
+     useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (!e.target.closest('.popup-menu') && !e.target.closest('.kebab-menu')) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('click', handleOutsideClick);
+    return () => document.removeEventListener('click', handleOutsideClick);
+  }, []);
     return <nav className="navbar">
         <div className="navbar-logo">LAUNDRY</div>
         <div className="navbar-links">
@@ -11,6 +21,17 @@ export function LoginHeader() {
             <a href="#" className="nav-link">Career</a>
             <a href="#" className="nav-link sign-in-btn">Sign In</a>
         </div>
+        <div className="kebab-menu" onClick={() => setMenuOpen(!menuOpen)}>
+        ⋮
+      </div>
+      {menuOpen && (
+        <div className="popup-menu">
+          <a href="#" className="popup-link">Home</a>
+          <a href="#" className="popup-link">Services</a>
+          <a href="#" className="popup-link">Contact</a>
+          <button className="sign-in-btn popup-btn">Sign In</button>
+        </div>
+      )}
     </nav>
 }
 export const Footer = () => {
@@ -53,9 +74,9 @@ export const Footer = () => {
                 </div>
 
             </div>
-             <div className="create-footer">
-          2025 © Laundry
-        </div>
+            <div className="create-footer">
+                2025 © Laundry
+            </div>
         </>
     );
 };
@@ -87,11 +108,10 @@ const SignInForm = () => {
     const [error, setError] = React.useState('');
     const [success, setSuccess] = React.useState('');
     const [isLoading, setIsLoading] = React.useState(false);
-    const [response, setResponce] = useState({});
     const [passwordVisible, setPasswordVisible] = useState(false);
-      const toggleVisibility = () => {
-    setPasswordVisible(prev => !prev);
-  };
+    const toggleVisibility = () => {
+        setPasswordVisible(prev => !prev);
+    };
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -129,29 +149,19 @@ const SignInForm = () => {
             body: JSON.stringify(formData)
         }).then((res) => res.json()).
             then((data) => {
-                
                 if (data.status === "Failed") {
                     setError(data.message);
-                } else {
-                    const token = data.token;
-                    setToken("token", token);
-                   
-                    if (token === getToken("token")) {
-                        console.log(token);
-                        console.log(data.name);
-                        
-                        navigate("/create");
-                        setSuccess('login success')
-                    }
-                }
-                if (data.status == 'Sucess') {
+                } else if (data.status === "Success" && data.token) {
                     setToken("token", data.token);
-         
+                    setSuccess('Login successful!');
+                    navigate("/create");
+                } else {
+                    setError("Unexpected response from server.");
                 }
             }).catch((error) => {
                 setError(error.message)
             })
-        console.log(response);
+
 
     };
 
@@ -173,8 +183,8 @@ const SignInForm = () => {
                 value={formData.password}
                 onChange={handleInputChange}
             />
-            <img className='lock-icon'  src='images/padlock.svg' placeholder='padlockimg/svg' onClick={toggleVisibility} />
-            <label className="forgot-password"><a href="#"  onClick={()=>{
+            <img className='lock-icon' src='images/padlock.svg' placeholder='padlockimg/svg' onClick={toggleVisibility} />
+            <label className="forgot-password"><a href="#" onClick={() => {
                 navigate('/reset-password')
             }}>Forget Password?</a></label>
             {error && <div className="error-message">{error}</div>}

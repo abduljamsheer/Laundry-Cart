@@ -32,9 +32,6 @@ body {
 
 .container {
   width: 100%;
-  /* max-width: 1200px; */
-  /* margin: 0 auto; */
-  /* padding: 0 15px; */
 }
 
 a {
@@ -65,7 +62,6 @@ a:hover {
 
 .registration-container {
   background-color: var(--white);
-  /* border-radius: 8px; */
   box-shadow: var(--box-shadow);
   display: flex;
   overflow: hidden;
@@ -257,7 +253,7 @@ select {
   transform: translateY(-2px);
 }
 
-@media (max-width: 992px) {
+@media (max-width: 900px) {
   .form-row {
     flex-direction: column;
     gap: 15px;
@@ -283,7 +279,7 @@ select {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .nav-links {
     display: none;
   }
