@@ -3,7 +3,7 @@ import '../styles/profile.css';
 import { getToken } from '../AuthOPration';
 
 const ProfileComponent = () => {
-  const URL = process.env.REACT_APP_API_URL ||'http://localhost:8000';
+  const URL = 'https://laundry-server-b7j6.onrender.com'||'http://localhost:8000';
   const [user, setUser] = useState({
     email: '',
     oldPassword: '',
@@ -26,7 +26,7 @@ const ProfileComponent = () => {
         });
         if (!response.ok) throw new Error('Failed to fetch user data');
         const data = await response.json();
-        setUser((prev) => ({ ...prev, email: data.data.email, }));
+        setUser((prev) => ({ ...prev, email: data.email, }));
       } catch (err) {
         setError('Error fetching user data');
       }
@@ -83,7 +83,7 @@ const ProfileComponent = () => {
 
   return (
     <div className="profile-container" onClick={(e) => e.stopPropagation()}>
-      <h2 className="profile-title">User Profile</h2>
+      <h3 className="profile-title">User Profile</h3>
       {error && <p className="error-message">{error}</p>}
       {success && <p className="success-message">{success}</p>}
 

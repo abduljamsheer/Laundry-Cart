@@ -10,7 +10,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 
 const Layout = () => {
-   const URL = process.env.REACT_APP_API_URL ||'http://localhost:8000';
+   const URL = 'https://laundry-server-b7j6.onrender.com'||'http://localhost:8000';
   const [activeView, setActiveView] = React.useState('orders');
   const [orders, setOrders] = React.useState([]);
   const [showSuccess, setShowSuccess] = React.useState(false);
@@ -78,7 +78,7 @@ const Layout = () => {
         <div className='mixed-container'>
           <Sidebar activeView={activeView} setActiveView={setActiveView} />
           {activeView === 'orders' ? (
-            <OrdersSection setActiveView={setActiveView} orders={orders} setOrder={addOrder}/>
+            <OrdersSection setActiveView={setActiveView} orders={orders} setOrder={addOrder} setShowSuccess={setShowSuccess}/>
           ) : (
             <CreateOrderSection setActiveView={setActiveView} addOrder={addOrder} />
           )}

@@ -104,7 +104,7 @@
     margin-left: 1rem;
  }
  
- .modal-overlay {
+ .summary-modal-overlay {
      position: fixed;
      top: 0;
      left: 0;
@@ -112,7 +112,7 @@
      height: 100%;
      background: rgba(0, 0, 0, 0.5);
      display: flex;
-     justify-content: center;
+     justify-content: flex-end;
      align-items: center;
  }
  .summary-modal {
@@ -120,7 +120,9 @@
      padding: 2rem;
      border-radius: 10px;
      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-     width: 600px;
+     /* width: 600px; */
+     height: 100vh;
+     width: 50vw;
      position: relative;
  }
 
@@ -181,5 +183,16 @@
  .summary-modal .add-new {
      color: #5861AE;
      cursor: pointer;
-     text-decoration: underline;
  }
+ .address-popup {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  z-index: 10;
+  top: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}

@@ -100,7 +100,7 @@ const MainSection = () => {
     );
 };
 const SignInForm = () => {
-    const URL=process.env.REACT_APP_API_URL;
+    const URL='https://laundry-server-b7j6.onrender.com'||'http://localhost:8000';
     const navigate = useNavigate()
     const [formData, setFormData] = React.useState({
         contact: '',

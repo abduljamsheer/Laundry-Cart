@@ -37,9 +37,7 @@ const ViewPopup = ({ order, onClose,conform,orderId }) => {
                   {item}
                 </li>
               ))}
-            </ul>
-       
-
+            </ul>      
           <hr />
        
 
@@ -47,6 +45,10 @@ const ViewPopup = ({ order, onClose,conform,orderId }) => {
             <p>Pickup Charges: 90</p>
             <p><strong>Total: Rs {order.price}</strong></p>
           </div>
+        <div className='popup-content-body'>
+          <strong>Address</strong>
+          <p>{order.address}</p>
+        </div>
         </div>
         <div className='popup-cancel-btn'>
 

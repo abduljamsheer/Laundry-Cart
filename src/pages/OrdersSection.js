@@ -4,35 +4,54 @@ import CancelPopup from '../components/cancele';
 import { Eye } from 'lucide-react'
 import { getToken } from '../AuthOPration'
 import ViewPopup from '../components/ViewPopup';
-const OrdersSection = ({ setActiveView, orders, setOrder }) => {
-   const URL = process.env.REACT_APP_API_URL ||'http://localhost:8000';
+const OrdersSection = ({ setActiveView, orders, setOrder,setShowSuccess }) => {
+  const URL ='https://laundry-server-b7j6.onrender.com'|| 'http://localhost:8000';
   const [popup, setPopup] = useState(false)
   const [view, setView] = useState(false)
   const [selectedOrderId, setSelectedOrderId] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-  const handleConfirmCancel = async () => {
-    try {
-      const token = getToken('token');
-      const res = await fetch(`${URL}/api/v1/order/${selectedOrderId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      });
 
-      if (!res.ok) throw new Error('Failed to delete order');
-      setPopup(false);
-    } catch (error) {
-      console.error('Delete error:', error);
-      alert('Could not delete order');
-    }
-  };
+const handleConfirmCancel = async () => {
+  try {
+    const token = getToken('token');
+    const res = await fetch(`${URL}/api/v1/order/${selectedOrderId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ status: 'Cancelled' })
+    });
 
+    const data = await res.json();
+    console.log('PATCH response:', res.status, data);
+
+    if (!res.ok) throw new Error(data.message || 'Failed to cancel order');
+
+    setOrder(prevOrders =>
+      prevOrders.map(order =>
+        order._id === selectedOrderId
+          ? { ...order, status: 'Cancelled' }
+          : order
+      )
+    );
+    setShowSuccess(false)
+
+    setPopup(false);
+    setView(false)
+  } catch (error) {
+    console.error('Delete error:', error);
+    alert('Could not cancel order');
+  }
+};
+  // const filteredOrders = orders.filter(order =>
+  //   order.orderId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //   (order.location && order.location.toLowerCase().includes(searchTerm.toLowerCase()))
+  // );
   const filteredOrders = orders.filter(order =>
-    order.orderId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (order.location && order.location.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  (order.orderId && order.orderId.toLowerCase().includes(searchTerm.toLowerCase())) ||
+  (order.location && order.location.toLowerCase().includes(searchTerm.toLowerCase()))
+);
   return (
     <div className="orders-section">
       <div className="orders-header">
@@ -63,7 +82,7 @@ const OrdersSection = ({ setActiveView, orders, setOrder }) => {
           >
             CREATE
           </button></div>
-      ) : (                                              
+      ) : (
         <table className="orders-table">
           <thead>
             <tr>
@@ -90,24 +109,29 @@ const OrdersSection = ({ setActiveView, orders, setOrder }) => {
                 <td>{order.totalItems}</td>
                 <td>{order.price}</td>
                 <td>
-                  <span>
+                  <span
+                    style={{
+                      color: order.status === 'Cancelled' ? 'red' : 'inherit',
+                      fontWeight: order.status === 'Cancelled' ? 'bold' : 'normal'
+                    }}
+                  >
                     {order.status}
                   </span>
                 </td>
                 <td>
                   <span className="action-btn" onClick={() => {
                     setView(true)
-                     setSelectedOrderId(order.orderId);
+                    setSelectedOrderId(order._id);
                   }}>
                     <Eye />
                   </span>
                 </td>
                 <td>
-                  {(order.status === 'Ready to pickup' || order.status === 'Ready to deliver') && <span className='trash-cancel' onClick={() => {
-                    setSelectedOrderId(order.orderId);
+                  {(order.status === 'Ready to pickup') && <span className='trash-cancel' onClick={() => {
+                    setSelectedOrderId(order._id);
                     setPopup(true)
                   }} >
-                    cancele order
+                    Cancel Order
                   </span>}
                 </td>
               </tr>
@@ -120,7 +144,7 @@ const OrdersSection = ({ setActiveView, orders, setOrder }) => {
       {view && selectedOrderId && (
         <ViewPopup
           onClose={setView}
-          order={orders.find(order => order.orderId === selectedOrderId)}
+          order={orders.find(order => order._id === selectedOrderId)}
           conform={handleConfirmCancel} orderId={selectedOrderId}
         />
       )}

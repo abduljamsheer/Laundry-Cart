@@ -3,7 +3,7 @@ import '../styles/signup.css'
 import { Footer, LoginHeader } from './login';
 import { useNavigate } from 'react-router-dom';
 function Signup() {
-   const URL=process.env.REACT_APP_API_URL;
+   const URL='https://laundry-server-b7j6.onrender.com'||'http://localhost:8000';
   const [formData, setFormData] = useState({
     name: '',
     email: '',

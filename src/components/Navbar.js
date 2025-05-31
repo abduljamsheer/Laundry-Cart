@@ -9,7 +9,7 @@ import { Edit, LogOut } from 'lucide-react'
 import ProfileComponent from './Profile';
 
 const NavBar = () => {
-  const URL=process.env.REACT_APP_API_URL;
+  const URL='https://laundry-server-b7j6.onrender.com'||'http://localhost:8000';
   const navigate = useNavigate()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [edit, setEdit] = useState(false)
@@ -22,7 +22,8 @@ const NavBar = () => {
   };
   useEffect(() => {
     const token = getToken('token')
-    fetch(`${URL}/api/v1/user`, {
+    try {
+      fetch(`${URL}/api/v1/user`, {
       method: "GET",
       headers: {
         'Content-Type': 'application/json',
@@ -31,9 +32,14 @@ const NavBar = () => {
 
     }).then((res) => res.json()).
       then((data) => {
-        setName(data.data.name);
-        setEmail(data.data.email)
+        setName(data.name);
+        setEmail(data.email)
       })
+    } catch (error) {
+      console.log(error.message);
+      
+    }
+    
 
   }, []);
 

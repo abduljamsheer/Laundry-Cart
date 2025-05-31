@@ -3,17 +3,17 @@ import React, { useState } from 'react'
 import '../styles/createsection.css'
 import { getToken } from '../AuthOPration';
 import { useNavigate } from 'react-router-dom';
+import AddressSelector from '../components/AddressSelector';
 const CreateOrderSection = ({ setActiveView, addOrder }) => {
-   const URL = process.env.REACT_APP_API_URL ||'http://localhost:8000';
-  const washTypePrices = {
-    wash: 20,
-    iron: 10,
-    dry: 30,
-    chemical: 50,
-  };
+  const URL = 'https://laundry-server-b7j6.onrender.com'||'http://localhost:8000';
+  const [showSummary, setShowSummary] = React.useState(false);
+  const [selectedAddress, setSelectedAddress] = React.useState('Home');
+  const [storeLocation, setStoreLocation] = React.useState('Jp Nagar');
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [Address, setAddress] = useState('')
   const [orderItems, setOrderItems] = React.useState([
     { type: 'Shirts', quantity: 0, washType: [], pricePerItem: 20, total: 0, imageurl: 'images/shirt.jpg' },
-    { type: 'T Shirts', quantity: 0, washType: [], pricePerItem: 20, total: 0, imageurl: 'images/t-shirt.avif' },
+    { type: 'tshirts', quantity: 0, washType: [], pricePerItem: 20, total: 0, imageurl: 'images/t-shirt.avif' },
     { type: 'Trousers', quantity: 0, washType: [], pricePerItem: 30, total: 0, imageurl: 'images/trouser.webp' },
     { type: 'Jeans', quantity: 0, washType: [], pricePerItem: 30, total: 0, imageurl: 'images/jeans.jpg' },
     { type: 'Boxers', quantity: 0, washType: [], pricePerItem: 20, total: 0, imageurl: 'images/sports.jpg' },
@@ -21,10 +21,30 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
     { type: 'Others', quantity: 0, washType: [], pricePerItem: 50, total: 0, imageurl: 'images/others.jpg' },
   ]);
   const statusofWashing = ["In Washing", "Ready to pickup", "In Ironing", "Ready to deliver"];
+  const washPrices = {
+    shirts: { wash: 10, iron: 10, bleach: 15, dry: 20, chemical: 50 },
+    tshirts: { wash: 10, iron: 10, bleach: 15, dry: 20, chemical: 50 },
+    trousers: { wash: 15, iron: 10, bleach: 20, dry: 25, chemical: 50 },
+    jeans: { wash: 15, iron: 10, bleach: 20, dry: 25, chemical: 50 },
+    boxers: { wash: 15, iron: 10, bleach: 20, dry: 25, chemical: 50 },
+    joggers: { wash: 15, iron: 10, bleach: 20, dry: 25, chemical: 50 },
+    others: { wash: 15, iron: 10, bleach: 20, dry: 25, chemical: 50 },
+  };
+  // const calculateTotal = (item) => {
+  //   const basePrice = item.pricePerItem * item.quantity;
+  //   const washTypeCost = item.washType.reduce((sum, type) => sum + (washTypePrices[type] || 0), 0) * item.quantity;
+  //   return basePrice + washTypeCost;
+  // };
   const calculateTotal = (item) => {
-    const basePrice = item.pricePerItem * item.quantity;
-    const washTypeCost = item.washType.reduce((sum, type) => sum + (washTypePrices[type] || 0), 0) * item.quantity;
-    return basePrice + washTypeCost;
+    if (!item || !item.type) return 0;
+
+    const itemKey = item.type.toLowerCase(); // use .type, not .name
+    const prices = washPrices[itemKey] || {};
+    const washCost = item.washType.reduce(
+      (sum, type) => sum + (prices[type] || 0),
+      0
+    );
+    return item.quantity * washCost;
   };
 
   const handleQuantityChange = (index, value) => {
@@ -33,19 +53,19 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
     newItems[index].total = calculateTotal(newItems[index]);
     setOrderItems(newItems);
   };
-  const [showSummary, setShowSummary] = React.useState(false);
-  // const [selectedAddress, setSelectedAddress] = React.useState('Home');
-  const [storeLocation, setStoreLocation] = React.useState('Jp Nagar');
+
 
   const handleWashType = (index, type) => {
     const newItems = [...orderItems];
-    const currentTypes = newItems[index].washType;
-    if (currentTypes.includes(type)) {
-      newItems[index].washType = currentTypes.filter((t) => t !== type);
+    const item = newItems[index];
+
+    if (item.washType.includes(type)) {
+      item.washType = item.washType.filter((t) => t !== type);
     } else {
-      newItems[index].washType.push(type);
+      item.washType.push(type);
     }
-    newItems[index].total = calculateTotal(newItems[index]);
+
+    item.total = item.washType.length > 0 ? calculateTotal(item) : 0;
     setOrderItems(newItems);
   };
   const handleReset = (index) => {
@@ -74,6 +94,15 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
   const output = `${date},${time}`;
   const navigate = useNavigate()
 
+  let finalAddress = '';
+
+  if (selectedAddress === 'Home') {
+    finalAddress = 'Home: #223, 10th road, Jp Nagar, Bangalore';
+  } else if (selectedAddress === 'Other') {
+    finalAddress = 'Other: #223, 10th road, Jp Nagar, Bangalore';
+  } else if (selectedAddress === 'new' && Address) {
+    finalAddress = `${Address.label}: ${Address.street}, ${Address.city}, ${Address.state}`;
+  }
   const selectedItems = orderItems
     .filter(item => item.quantity > 0)
     .map(item => item.type);
@@ -87,7 +116,8 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
       totalItems: orderItems.reduce((sum, item) => sum + item.quantity, 0),
       price: `Rs ${orderItems.reduce((sum, item) => sum + item.total, 0) + 90}`,
       status: statusofWashing[Math.floor(Math.random() * 4)],
-      items: selectedItems
+      items: selectedItems,
+      address:finalAddress
     };
     const token = getToken('token');
     if (!token) {
@@ -111,7 +141,7 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
         throw new Error(data.message || 'Failed to create order');
       }
 
-      addOrder(newOrder);  // Add order locally after success
+      addOrder(newOrder);
       setShowSummary(false);
       setActiveView('orders');
 
@@ -211,7 +241,7 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
                   </button>
                 )} */}
                 <div className="price-breakdown">
-                  {item.total > 0 ? (
+                  {/* {item.total > 0 ? (
                     <>
                       <span>{item.quantity} x {item.pricePerItem} = {item.pricePerItem * item.quantity}</span>
                       <span>Total: ₹{item.total}</span>
@@ -223,6 +253,17 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
                     <button className="reset-btn" onClick={() => handleReset(index)}>
                       Reset
                     </button>
+                  )} */}
+                  {item.quantity > 0 && item.washType.length > 0 ? (
+                    <>
+                      <span>{item.quantity} x {calculateTotal(item) / item.quantity} =  <b>₹{item.total}</b></span>
+                      {/* <span>Total: ₹{item.total}</span> */}
+                      <button className="reset-btn" onClick={() => handleReset(index)}>
+                        Reset
+                      </button>
+                    </>
+                  ) : (
+                    '--'
                   )}
                 </div>
               </td>
@@ -242,7 +283,7 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
 
 
       {showSummary && (
-        <div className="modal-overlay">
+        <div className="summary-modal-overlay">
           <div className="summary-modal">
             <button className="close-btn" onClick={() => setShowSummary(false)}>×</button>
             <h3>Summary</h3>
@@ -264,7 +305,7 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
                       : (storeLocation == 'RT Nagar') ? '#15, 2nd Cross, RT Nagar Main Road, RT Nagar, Bangalore'
                         : (storeLocation == 'Jayanagar') ? '#122, 9th Main, 3rd Block, Jayanagar, Bangalore' : '')}
                 <br />
-                <strong>Phone:</strong>
+
                 <strong>Phone:</strong> {getPhoneNumber(storeLocation)}
               </div>
             </div>
@@ -294,7 +335,12 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
                 </tr>
               </tbody>
             </table>
-            {/* <div className="address-options">
+            <div>
+              <strong>Address</strong>
+
+            </div>
+            <div className="address-options">
+
               <div
                 className={`address-option ${selectedAddress === 'Home' ? 'selected' : ''}`}
                 onClick={() => setSelectedAddress('Home')}
@@ -309,16 +355,27 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
                 <strong>Other</strong>
                 <p>#223, 10th road, Jp Nagar, Bangalore</p>
               </div>
-              <div className="address-option">
+
+              {/* ///// */}
+              {Address?<div 
+              className={`address-option ${selectedAddress === 'new' ? 'selected' : ''}`} 
+              onClick={() => setSelectedAddress('new')}
+              >
+               <strong>{Address.label}</strong>
+               <p>{Address.street},{Address.city},{Address.State}</p>
+              </div>:""}
+              <div className="address-option" onClick={() => setShowAddressForm(true)}>
                 <span className="add-new">ADD NEW</span>
               </div>
-            </div> */}
-            <button onClick={handleConfirm}>Confirm</button>
+            {showAddressForm && <AddressSelector setShowAddressForm={setShowAddressForm} setAddress={setAddress} />}
           </div>
+          <button onClick={handleConfirm}>Confirm</button>
+        </div>
         </div>
 
-      )}
-    </div>
+  )
+}
+    </div >
   );
 };
 
