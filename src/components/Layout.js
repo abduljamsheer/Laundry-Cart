@@ -7,8 +7,7 @@ import '../styles/layout.css';
 import SuccessModal from '../pages/Success';
 import { getToken } from '../AuthOPration';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-
+yy
 const Layout = () => {
    const URL = 'https://laundry-server-b7j6.onrender.com'||'http://localhost:8000';
   const [activeView, setActiveView] = React.useState('orders');
