@@ -3,7 +3,7 @@ import '../styles/login.css'
 import { useNavigate } from 'react-router-dom';
 import { getToken, setToken } from '../AuthOPration';
 export function LoginHeader() {
-    
+
     const [menuOpen, setMenuOpen] = useState(false);
     useEffect(() => {
         const handleOutsideClick = (e) => {
@@ -100,7 +100,7 @@ const MainSection = () => {
     );
 };
 const SignInForm = () => {
-    const URL='https://laundry-server-b7j6.onrender.com'||'http://localhost:8000';
+    const URL = 'https://laundry-server-b7j6.onrender.com' || 'http://localhost:8000';
     const navigate = useNavigate()
     const [formData, setFormData] = React.useState({
         contact: '',
@@ -170,37 +170,44 @@ const SignInForm = () => {
     return (
         <div className="right-section">
             <h2>SIGN IN</h2>
-            <input
-                type="text"
-                name="contact"
-                placeholder="Mobile / Email"
-                value={formData.contact}
-                onChange={handleInputChange}
-            />
-            <input
-                type={passwordVisible ? 'text' : 'password'}
-                name="password"
-                ref={inputRef}
-                placeholder="Password"
-                value={formData.password}
-                onChange={handleInputChange}
-            />
-            <img className='lock-icon' src='images/padlock.svg' placeholder='padlockimg/svg' onClick={toggleVisibility} />
-            <label className="forgot-password"><a href="#" onClick={() => {
-                navigate('/reset-password')
-            }}>Forget Password?</a></label>
-            {error && <div className="error-message">{error}</div>}
-            {success && <div className="success-message">{success}</div>}
-            <div className='btn-head'>
+            <form onSubmit={(e) => {
+                e.preventDefault();
+                handleSignIn();
+            }}>
+                <input
+                    type="text"
+                    name="contact"
+                    placeholder="Mobile / Email"
+                    value={formData.contact}
+                    autoComplete="username"
+                    onChange={handleInputChange}
+                />
+                <input
+                    type={passwordVisible ? 'text' : 'password'}
+                    name="password"
+                    ref={inputRef}
+                    placeholder="Password"
+                    autoComplete="current-password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                />
+                <img className='lock-icon' src='images/padlock.svg' placeholder='padlockimg/svg' onClick={toggleVisibility} />
+                <label className="forgot-password"><a href="#" onClick={() => {
+                    navigate('/reset-password')
+                }}>Forget Password?</a></label>
+                {error && <div className="error-message">{error}</div>}
+                {success && <div className="success-message">{success}</div>}
+                <div className='btn-head'>
 
-                <button
-                    className="signin-btn"
-                    onClick={handleSignIn}
-                    disabled={isLoading}
-                >
-                    {isLoading ? 'Signing In...' : 'Sign In'}
-                </button>
-            </div>
+                    <button
+                        className="signin-btn"
+                        type='submit'
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Signing In...' : 'Sign In'}
+                    </button>
+                </div>
+            </form>
         </div>
     );
 };

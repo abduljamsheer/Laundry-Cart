@@ -30,15 +30,10 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
     joggers: { wash: 15, iron: 10, bleach: 20, dry: 25, chemical: 50 },
     others: { wash: 15, iron: 10, bleach: 20, dry: 25, chemical: 50 },
   };
-  // const calculateTotal = (item) => {
-  //   const basePrice = item.pricePerItem * item.quantity;
-  //   const washTypeCost = item.washType.reduce((sum, type) => sum + (washTypePrices[type] || 0), 0) * item.quantity;
-  //   return basePrice + washTypeCost;
-  // };
   const calculateTotal = (item) => {
     if (!item || !item.type) return 0;
 
-    const itemKey = item.type.toLowerCase(); // use .type, not .name
+    const itemKey = item.type.toLowerCase(); 
     const prices = washPrices[itemKey] || {};
     const washCost = item.washType.reduce(
       (sum, type) => sum + (prices[type] || 0),
@@ -85,7 +80,16 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
       alert('Please add at least one item to proceed.');
     }
   };
-
+const phoneNumbers = {
+  'Jp Nagar': '9988697755',
+  'Whitefield': '9845012345',
+  'Indiranagar': '9900278901',
+  'RT Nagar': '9741122334',
+  'Jayanagar': '9611998877'
+};
+const getPhoneNumber = (storeLocation) => {
+  return phoneNumbers[storeLocation] || '';
+};
   const today = new Date();
   const date = today.toLocaleDateString();
   const hours = String(today.getHours()).padStart(2, '0');
@@ -156,22 +160,22 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
   const subtotal = orderItems.reduce((sum, item) => sum + item.total, 0);
   const pickupCharges = 90;
   const total = subtotal + pickupCharges;
-  const getPhoneNumber = (storeLocation) => {
-    switch (storeLocation) {
-      case 'Jp Nagar':
-        return '9988697755';
-      case 'Whitefield':
-        return '9845012345';
-      case 'Indiranagar':
-        return '9900278901';
-      case 'RT Nagar':
-        return '9741122334';
-      case 'Jayanagar':
-        return '9611998877';
-      default:
-        return '';
-    }
-  };
+  // const getPhoneNumber = (storeLocation) => {
+  //   switch (storeLocation) {
+  //     case 'Jp Nagar':
+  //       return '9988697755';
+  //     case 'Whitefield':
+  //       return '9845012345';
+  //     case 'Indiranagar':
+  //       return '9900278901';
+  //     case 'RT Nagar':
+  //       return '9741122334';
+  //     case 'Jayanagar':
+  //       return '9611998877';
+  //     default:
+  //       return '';
+  //   }
+  // };
   return (
     <div className="create-order-section">
       <div className="orders-header">
@@ -234,30 +238,13 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
                 </div>
               </td>
               <td className='price-data'>
-                {/* {item.total > 0 ? `${item.quantity} x ${item.pricePerItem} = ${item.total}` : '--'}
-                {item.quantity > 0 && (
-                  <button className="reset-btn" onClick={() => handleReset(index)}>
-                    Reset
-                  </button>
-                )} */}
+               
                 <div className="price-breakdown">
-                  {/* {item.total > 0 ? (
-                    <>
-                      <span>{item.quantity} x {item.pricePerItem} = {item.pricePerItem * item.quantity}</span>
-                      <span>Total: ₹{item.total}</span>
-                    </>
-                  ) : (
-                    '--'
-                  )}
-                  {item.quantity > 0 && (
-                    <button className="reset-btn" onClick={() => handleReset(index)}>
-                      Reset
-                    </button>
-                  )} */}
+                  
                   {item.quantity > 0 && item.washType.length > 0 ? (
                     <>
                       <span>{item.quantity} x {calculateTotal(item) / item.quantity} =  <b>₹{item.total}</b></span>
-                      {/* <span>Total: ₹{item.total}</span> */}
+                 
                       <button className="reset-btn" onClick={() => handleReset(index)}>
                         Reset
                       </button>
@@ -355,8 +342,6 @@ const CreateOrderSection = ({ setActiveView, addOrder }) => {
                 <strong>Other</strong>
                 <p>#223, 10th road, Jp Nagar, Bangalore</p>
               </div>
-
-              {/* ///// */}
               {Address?<div 
               className={`address-option ${selectedAddress === 'new' ? 'selected' : ''}`} 
               onClick={() => setSelectedAddress('new')}

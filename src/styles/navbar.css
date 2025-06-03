@@ -134,3 +134,61 @@
   padding-top: 11px;
   padding-right: 5px;
 }
+
+@media (max-width: 768px) {
+  .create-navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.5rem 1rem;
+  }
+
+  .navbar-left {
+    width: 100%;
+    justify-content: space-between;
+    padding-left: 0;
+  }
+
+  .navbar-left .logo {
+    padding-left: 0;
+    font-size: 1.1rem;
+  }
+
+  .navbar-right {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #ddd;
+  }
+
+  .navbar-right a {
+    padding: 0.5rem 0;
+    width: 100%;
+    height: auto;
+    border-left: none;
+    border-top: 0.5px solid #E3E3E3;
+  }
+
+  .navbar-right .user-profile {
+    padding: 0.8rem 1rem;
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .dropdown-panel {
+    right: 10px;
+    left: 10px;
+    width: calc(100% - 20px);
+  }
+
+  .logout-button {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .profile {
+    font-size: 0.9rem;
+  }
+}
